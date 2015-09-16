@@ -2,11 +2,13 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" default-activation="eager">
 
     <bean id="ConnectionFactory" class="org.apache.activemq.ActiveMQSslConnectionFactory">
-        <property name="brokerURL" value="ssl://localhost:61617" />
-        <property name="userName" value="shipuser" />
-        <property name="password" value="shippwd" />
-        <property name="keyStore" value="src/main/resources/keystore.jks"/>
+        <property name="brokerURL" value="ssl://localhost:61617"/>
+        <property name="userName" value="shipuser"/>
+        <property name="password" value="shippwd"/>
+        <property name="keyStore" value="keystore.jks"/>
         <property name="keyStorePassword" value="redhat"/>
+        <property name="trustStore" value="keystore.jks"/>
+        <property name="trustStorePassword" value="redhat"/>
     </bean>
 
     <service interface="javax.jms.ConnectionFactory" ref="ConnectionFactory">

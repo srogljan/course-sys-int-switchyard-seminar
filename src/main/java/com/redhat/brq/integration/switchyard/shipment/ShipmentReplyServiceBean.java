@@ -1,6 +1,5 @@
-package com.redhat.brq.integration.switchyard.inventory;
+package com.redhat.brq.integration.switchyard.shipment;
 
-import com.redhat.brq.integration.switchyard.models.InventoryReply;
 import com.redhat.brq.integration.switchyard.models.Status;
 import com.redhat.brq.integration.switchyard.status.OrderStatusService;
 import org.switchyard.Context;
@@ -8,10 +7,9 @@ import org.switchyard.component.bean.Reference;
 import org.switchyard.component.bean.Service;
 
 import javax.inject.Inject;
-import java.util.Arrays;
 
-@Service(InventoryReplyService.class)
-public class InventoryReplyServiceBean implements InventoryReplyService {
+@Service(ShipmentReplyService.class)
+public class ShipmentReplyServiceBean implements ShipmentReplyService {
 
     @Inject
     private Context context;
@@ -21,10 +19,10 @@ public class InventoryReplyServiceBean implements InventoryReplyService {
     private OrderStatusService statusService;
 
     @Override
-    public void process(InventoryReply[] reply) {
+    public void consume(String msg) {
         long id = Long.parseLong(context.getPropertyValue("orderId"));
         Status status = statusService.find(id);
-        status.setInventory(Arrays.stream(reply).anyMatch((InventoryReply x) -> x.getReserved() == 0) ? "FAIL" : "OK");
+        status.setShipment(msg);
         statusService.save(status);
     }
 }

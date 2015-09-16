@@ -1,51 +1,50 @@
 package com.redhat.brq.integration.switchyard.models;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
 import java.io.Serializable;
 
 @XmlRootElement(name = "item")
 public class OrderItem implements Serializable {
 
-	private static final long serialVersionUID = -8796388121191014358L;
+    private static final long serialVersionUID = -8796388121191014358L;
 
-	private long articleId;
+    private long articleId;
 
-	private int count;
+    private int count;
 
-	private double unitPrice;
+    private double unitPrice;
 
-	public long getArticleId() {
-		return articleId;
-	}
+    public long getArticleId() {
+        return articleId;
+    }
 
-	public void setArticleId(long articleId) {
-		this.articleId = articleId;
-	}
+    public void setArticleId(long articleId) {
+        this.articleId = articleId;
+    }
 
-	public int getCount() {
-		return count;
-	}
+    public int getCount() {
+        return count;
+    }
 
-	public void setCount(int count) {
-		this.count = count;
-	}
+    public void setCount(int count) {
+        this.count = count;
+    }
 
-	public double getUnitPrice() {
-		return unitPrice;
-	}
+    public double getUnitPrice() {
+        return unitPrice;
+    }
 
-	public void setUnitPrice(double unitPrice) {
-		this.unitPrice = unitPrice;
-	}
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
 
-	public double getPrice() {
-		return count * getUnitPrice();
-	}
+    public double getPrice() {
+        return count * getUnitPrice();
+    }
 
-	@Override
-	public String toString() {
-		return "OrderItem [articleId=" + articleId + ", count=" + count
-				+ ", unitPrice=" + unitPrice + "]";
-	}
+    @Override
+    public String toString() {
+        return "OrderItem [articleId=" + articleId + ", count=" + count
+                + ", unitPrice=" + unitPrice + "]";
+    }
 }

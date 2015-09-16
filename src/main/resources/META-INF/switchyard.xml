@@ -1,72 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:2.0" xmlns:file="urn:switchyard-component-camel-file:config:2.0" xmlns:jms="urn:switchyard-component-camel-jms:config:2.0" xmlns:resteasy="urn:switchyard-component-resteasy:config:2.0" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:2.0" xmlns:sy="urn:switchyard-config:switchyard:2.0" xmlns:transform="urn:switchyard-config:transform:2.0" name="order" targetNamespace="urn:com.redhat.brq.integration.switchyard:1.0">
   <sca:composite name="order" targetNamespace="urn:com.redhat.brq.integration.switchyard:1.0">
-    <sca:component name="OrderServiceBean">
-      <bean:implementation.bean class="com.redhat.brq.integration.switchyard.shop.ShopServiceBean"/>
-      <sca:service name="ShopService">
-        <sca:interface.java interface="com.redhat.brq.integration.switchyard.shop.ShopService"/>
+    <sca:component name="OrderComponent">
+      <sca:service name="OrderService">
+        <sca:interface.java interface="com.redhat.brq.integration.switchyard.shop.OrderService"/>
       </sca:service>
       <sca:reference name="ShipmentService">
         <sca:interface.java interface="com.redhat.brq.integration.switchyard.shipment.ShipmentService"/>
       </sca:reference>
-      <sca:reference name="OrderStatusService">
-        <sca:interface.java interface="com.redhat.brq.integration.switchyard.status.OrderStatusService"/>
-      </sca:reference>
       <sca:reference name="InventoryService">
         <sca:interface.java interface="com.redhat.brq.integration.switchyard.inventory.InventoryService"/>
       </sca:reference>
-      <sca:reference name="AccountingService">
-        <sca:interface.java interface="com.redhat.brq.integration.switchyard.accounting.AccountingService"/>
-      </sca:reference>
     </sca:component>
-    <sca:service name="ShopServicePortType" promote="OrderServiceBean/ShopService">
-      <sca:interface.wsdl interface="ShopService.wsdl#wsdl.porttype(ShopServicePortType)"/>
-      <soap:binding.soap name="soap1">
-        <soap:contextMapper includes=".*" soapHeadersType="XML"/>
-        <soap:wsdl>ShopService.wsdl</soap:wsdl>
-      </soap:binding.soap>
-    </sca:service>
-    <sca:reference name="ESBService" multiplicity="0..1" promote="OrderServiceBean/ShipmentService">
-      <sy:interface.esb inputType="java.lang.String"/>
-      <jms:binding.jms name="jms1">
-        <jms:contextMapper includes=".*"/>
-        <jms:queue>SHPMNT.REQ</jms:queue>
-        <jms:connectionFactory>#ConnectionFactory</jms:connectionFactory>
-      </jms:binding.jms>
-    </sca:reference>
-    <sca:component name="OrderStorage">
-      <bean:implementation.bean class="com.redhat.brq.integration.switchyard.status.OrderStatusServiceBean"/>
-      <sca:service name="OrderStatusService">
-        <sca:interface.java interface="com.redhat.brq.integration.switchyard.status.OrderStatusService"/>
-      </sca:service>
-    </sca:component>
-    <sca:component name="Component">
-      <bean:implementation.bean class="com.redhat.brq.integration.switchyard.shipment.ConsumeJMSServiceBean"/>
-      <sca:service name="ConsumeJMSService">
-        <sca:interface.java interface="com.redhat.brq.integration.switchyard.shipment.ConsumeJMSService"/>
-      </sca:service>
-      <sca:reference name="OrderStatusService">
-        <sca:interface.java interface="com.redhat.brq.integration.switchyard.status.OrderStatusService"/>
-      </sca:reference>
-    </sca:component>
-    <sca:service name="ConsumeJMSService" promote="Component/ConsumeJMSService">
-      <sca:interface.java interface="com.redhat.brq.integration.switchyard.shipment.ConsumeJMSService"/>
-      <jms:binding.jms name="jms1">
-        <jms:contextMapper includes=".*"/>
-        <jms:queue>SHPMNT.RESP</jms:queue>
-        <jms:connectionFactory>#ConnectionFactory</jms:connectionFactory>
-      </jms:binding.jms>
-    </sca:service>
-    <sca:reference name="InventoryService" multiplicity="0..1" promote="OrderServiceBean/InventoryService">
-      <sy:interface.esb inputType="java:java.lang.String"/>
-      <file:binding.file name="file1">
-        <file:contextMapper includes=".*"/>
-        <file:messageComposer class="com.redhat.brq.integration.switchyard.inventory.MessageComposer"/>
-        <file:directory>${sys.base}/target/inbox/inventory</file:directory>
-        <file:produce/>
-      </file:binding.file>
-    </sca:reference>
-    <sca:component name="Component1">
+    <sca:component name="InventoryReplyComponent">
       <bean:implementation.bean class="com.redhat.brq.integration.switchyard.inventory.InventoryReplyServiceBean"/>
       <sca:service name="InventoryReplyService">
         <sca:interface.java interface="com.redhat.brq.integration.switchyard.inventory.InventoryReplyService"/>
@@ -75,40 +21,26 @@
         <sca:interface.java interface="com.redhat.brq.integration.switchyard.status.OrderStatusService"/>
       </sca:reference>
     </sca:component>
-    <sca:service name="InventoryServicePortType" promote="Component1/InventoryReplyService">
-      <sca:interface.wsdl interface="InventoryService.wsdl#wsdl.porttype(InventoryServicePortType)"/>
-      <file:binding.file name="file1">
-        <sy:operationSelector operationName="response"/>
-        <file:contextMapper includes="orderId"/>
-        <file:messageComposer class="com.redhat.brq.integration.switchyard.inventory.MessageComposer"/>
-        <file:directory>${sys.base}/target/outbox/inventory</file:directory>
-        <file:consume>
-          <file:delete>true</file:delete>
-        </file:consume>
-      </file:binding.file>
+    <sca:service name="InventoryReplyService" promote="InventoryReplyComponent/InventoryReplyService">
+      <sca:interface.wsdl interface="InventoryService.wsdl#wsdl.porttype(InventoryResponseServicePortType)"/>
     </sca:service>
-    <sca:reference name="AccountingResource" multiplicity="0..1" promote="OrderServiceBean/AccountingService">
-      <sca:interface.java interface="com.redhat.brq.integration.switchyard.accounting.AccountingResource"/>
-      <resteasy:binding.rest name="rest1">
-        <resteasy:interfaces>com.redhat.brq.integration.switchyard.accounting.AccountingResource</resteasy:interfaces>
-        <resteasy:address>${sys.rest}</resteasy:address>
-        <resteasy:basic>
-          <resteasy:user>admin</resteasy:user>
-          <resteasy:password>foo</resteasy:password>
-          <resteasy:host>localhost</resteasy:host>
-          <resteasy:port>7070</resteasy:port>
-        </resteasy:basic>
-      </resteasy:binding.rest>
+    <sca:reference name="InventoryServicePortType" multiplicity="0..1" promote="OrderComponent/InventoryService">
+      <sca:interface.wsdl interface="InventoryService.wsdl#wsdl.porttype(InventoryServicePortType)"/>
+    </sca:reference>
+    <sca:reference name="ShipmentServicePortType" multiplicity="0..1" promote="OrderComponent/ShipmentService">
+      <sca:interface.wsdl interface="ShipmentService.wsdl#wsdl.porttype(ShipmentServicePortType)"/>
+      <jms:binding.jms name="jms.req">
+        <jms:contextMapper includes=".*"/>
+        <jms:queue>SHPMNT.REQ</jms:queue>
+        <jms:connectionFactory>#ConnectionFactory</jms:connectionFactory>
+      </jms:binding.jms>
     </sca:reference>
   </sca:composite>
   <sy:transforms>
-    <transform:transform.jaxb from="java:com.redhat.brq.integration.switchyard.models.Address" to="java.lang.String" contextPath="com.redhat.brq.integration.switchyard.models"/>
     <transform:transform.jaxb from="{urn:com.redhat.brq.integration.switchyard:1.0}order" to="java:com.redhat.brq.integration.switchyard.models.Order" contextPath="com.redhat.brq.integration.switchyard.models"/>
-    <transform:transform.jaxb from="java.lang.String" to="java:java.lang.String"/>
-    <transform:transform.jaxb from="java:java.lang.String" to="{urn:com.redhat.brq.integration.switchyard:1.0}orderResponse"/>
   </sy:transforms>
   <sy:domain>
-    <sy:properties load="service.properties">
+    <sy:properties load="">
       <sy:property name="org.switchyard.handlers.messageTrace.enabled" value="true"/>
     </sy:properties>
   </sy:domain>

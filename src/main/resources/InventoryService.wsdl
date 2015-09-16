@@ -1,64 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<wsdl:definitions xmlns:tns="urn:com.redhat.brq.integration.excercise:1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="InventoryService" targetNamespace="urn:com.redhat.brq.integration.excercise:1.0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
-    <wsdl:types><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:com.redhat.brq.integration.excercise:1.0">
-	<xsd:element name="reserve">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="in" type="xsd:string"></xsd:element>
-			</xsd:sequence>
-		</xsd:complexType>
-	</xsd:element>
-	<xsd:element name="reserveResponse">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="out" type="xsd:string"></xsd:element>
-			</xsd:sequence>
-		</xsd:complexType>
-	</xsd:element>
-	<xsd:element name="response">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="in" type="xsd:string"></xsd:element>
-			</xsd:sequence>
-		</xsd:complexType>
-	</xsd:element>
-	<xsd:element name="responseResponse">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="out" type="xsd:string"></xsd:element>
-			</xsd:sequence>
-		</xsd:complexType>
-	</xsd:element></xsd:schema></wsdl:types>
-    <wsdl:message name="reserveRequest">
-		<wsdl:part name="parameters" element="tns:reserve"></wsdl:part>
-	</wsdl:message>
-    <wsdl:message name="reserveResponse">
-    	<wsdl:part name="parameters" element="tns:reserveResponse"></wsdl:part>
+<wsdl:definitions xmlns:tns="urn:com.redhat.brq.integration.exercise.inventory:1.0"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="InventoryService"
+                  targetNamespace="urn:com.redhat.brq.integration.exercise.inventory:1.0">
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                    targetNamespace="urn:com.redhat.brq.integration.exercise.inventory:1.0">
+            <xsd:element name="reserve" type="xsd:string">
+            </xsd:element>
+            <xsd:element name="response" type="xsd:string">
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="reserve">
+        <wsdl:part name="parameters" element="tns:reserve"></wsdl:part>
     </wsdl:message>
-    <wsdl:message name="responseRequest">
-    	<wsdl:part name="parameters" element="tns:response"></wsdl:part>
+    <wsdl:message name="response">
+        <wsdl:part name="parameters" element="tns:response"></wsdl:part>
     </wsdl:message>
-    <wsdl:message name="responseResponse">
-    	<wsdl:part name="parameters" element="tns:responseResponse"></wsdl:part>
-    </wsdl:message>
+
     <wsdl:portType name="InventoryServicePortType">
-    	<wsdl:operation name="reserve">
-    		<wsdl:input message="tns:reserveRequest"></wsdl:input>
-    	</wsdl:operation>
-    	<wsdl:operation name="response">
-    		<wsdl:input message="tns:responseRequest"></wsdl:input>
-    	</wsdl:operation>
+        <wsdl:operation name="reserve">
+            <wsdl:input message="tns:reserve"></wsdl:input>
+        </wsdl:operation>
     </wsdl:portType>
-    <wsdl:binding name="NewBinding"
-    	type="tns:InventoryServicePortType">
-    	<wsdl:operation name="reserve">
-    		<wsdl:input></wsdl:input>
-    	</wsdl:operation>
-    	<wsdl:operation name="response">
-    		<wsdl:input></wsdl:input>
-    	</wsdl:operation>
-    </wsdl:binding>
-    <wsdl:service name="InventoryService">
-    	<wsdl:port name="inventoryService" binding="tns:NewBinding">
-    		<soap:address location="http:localhost:8080/InventoryService" /></wsdl:port>
-    </wsdl:service></wsdl:definitions>
+    <wsdl:portType name="InventoryResponseServicePortType">
+        <wsdl:operation name="response">
+            <wsdl:input message="tns:response"></wsdl:input>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

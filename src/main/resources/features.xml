@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
-	<repository>mvn:org.switchyard.karaf/switchyard/${switchyard.version}/xml/features</repository>
-	<feature name="switchyard-integration-course" version="0.0.1-SNAPSHOT" resolver="(obr)">
-		<feature version="${switchyard.version}">switchyard-bean</feature>
-		<feature version="${switchyard.version}">switchyard-camel</feature>
-		<feature version="${switchyard.version}">switchyard-rules</feature>
-		<feature version="${switchyard.version}">switchyard-file</feature>
-		<feature version="${switchyard.version}">switchyard-jms</feature>
-		<feature version="${switchyard.version}">switchyard-jpa</feature>
-		<feature version="${switchyard.version}">switchyard-rest</feature>
-		<feature version="${switchyard.version}">switchyard-soap</feature>
-		<feature version="${switchyard.version}">switchyard</feature>
-		<bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
-	</feature>
+    <repository>mvn:org.switchyard.karaf/switchyard/${switchyard.version}/xml/features</repository>
+    <feature name="switchyard-integration-course" version="0.0.1-SNAPSHOT" resolver="(obr)">
+        <feature version="${switchyard.version}">switchyard-bean</feature>
+        <feature version="${switchyard.version}">switchyard-camel</feature>
+        <feature version="${switchyard.version}">switchyard-file</feature>
+        <feature version="${switchyard.version}">switchyard-jms</feature>
+        <feature version="${switchyard.version}">switchyard-rest</feature>
+        <feature version="${switchyard.version}">switchyard-soap</feature>
+        <feature version="${switchyard.version}">switchyard</feature>
+        <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+    </feature>
 </features>

@@ -25,28 +25,45 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _Address_QNAME = new QName("urn:com.redhat.brq.integration.switchyard:1.0", "address");
+    private final static QName _Order_QNAME = new QName("urn:com.redhat.brq.integration.switchyard:1.0", "order");
+    private final static QName _OrderItem_QNAME = new QName("urn:com.redhat.brq.integration.switchyard:1.0", "item");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package
-     *
      */
     public ObjectFactory() {
     }
 
     /**
      * Create an instance of {@link Address }
-     *
      */
     public Address createAddress() {
         return new Address();
     }
 
+    public Order createOrder() {
+        return new Order();
+    }
+
+    public OrderItem createOrderItem() {
+        return new OrderItem();
+    }
+
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link Address }{@code >}}
-     *
      */
     @XmlElementDecl(name = "address")
     public JAXBElement<Address> createAddress(Address value) {
         return new JAXBElement<Address>(_Address_QNAME, Address.class, null, value);
+    }
+
+    @XmlElementDecl(name = "order", namespace = "urn:com.redhat.brq.integration.switchyard:1.0")
+    public JAXBElement<Order> createOrder(Order value) {
+        return new JAXBElement<Order>(_Order_QNAME, Order.class, null, value);
+    }
+
+    @XmlElementDecl(name = "item")
+    public JAXBElement<OrderItem> createOrder(OrderItem value) {
+        return new JAXBElement<OrderItem>(_OrderItem_QNAME, OrderItem.class, null, value);
     }
 }

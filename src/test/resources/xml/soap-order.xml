@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:com.redhat.brq.integration.switchyard:1.0">
+    <soapenv:Header>
+    </soapenv:Header>
+    <soapenv:Body>
+        <urn:order>
+            <address>
+                <firstName>Jiri</firstName>
+                <lastName>Novak</lastName>
+                <street>Purkynova</street>
+                <city>Brno</city>
+                <zipCode>602 00</zipCode>
+            </address>
+            <id>1</id>
+            <item>
+                <articleId>1</articleId>
+                <count>1</count>
+                <unitPrice>10</unitPrice>
+            </item>
+            <item>
+                <articleId>2</articleId>
+                <count>2</count>
+                <unitPrice>20</unitPrice>
+            </item>
+        </urn:order>
+    </soapenv:Body>
+</soapenv:Envelope>

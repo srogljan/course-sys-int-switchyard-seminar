@@ -10,9 +10,9 @@ import javax.ws.rs.Produces;
 
 @Path("/accounting")
 public interface AccountingResource {
-	@POST
-	@Path("/")
-	@Produces("application/json")
-	@Consumes("application/json")
-	InvoiceIssueReply post(Order order) throws Exception;
+    @POST
+    @Path("/")
+    @Produces("application/json")
+    @Consumes("application/json")
+    InvoiceIssueReply post(Order order);
 }

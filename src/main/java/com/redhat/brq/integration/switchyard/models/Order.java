@@ -1,46 +1,55 @@
 package com.redhat.brq.integration.switchyard.models;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+@XmlRootElement(name = "order", namespace = "urn:com.redhat.brq.integration.switchyard")
 public class Order implements Serializable {
-	private static final long serialVersionUID = 9025355997861450821L;
+    private static final long serialVersionUID = 9025355997861450821L;
 
-	private long id;
-	private List<OrderItem> items;
-	private Address address;
+    private long id;
 
-	public long getId() {
-		return id;
-	}
+    private List<OrderItem> items = new ArrayList<>();
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    private Address address;
 
-	public List<OrderItem> getItems() {
-		return items;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setItems(List<OrderItem> items) {
-		this.items = items;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public Address getAddress() {
-		return address;
-	}
+    @XmlElement(name = "item")
+    public List<OrderItem> getItems() {
+        return items;
+    }
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
+    }
 
-	public double getTotalPrice() {
-		return items.stream().mapToDouble(OrderItem::getPrice).sum();
-	}
+    public Address getAddress() {
+        return address;
+    }
 
-	@Override
-	public String toString() {
-		return "Order [id=" + id + ", items=" + items + ", address=" + address
-				+ "]";
-	}
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    @XmlTransient
+    public double getTotalPrice() {
+        return items.stream().mapToDouble(OrderItem::getPrice).sum();
+    }
+
+    @Override
+    public String toString() {
+        return "Order [id=" + id + ", items=" + items + ", address=" + address
+                + "]";
+    }
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ShipmentService" targetNamespace="urn:com.redhat.brq.integration.exercise.shipment:1.0"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:tns="urn:com.redhat.brq.integration.exercise.shipment:1.0">
+    <wsdl:types>
+        <schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                targetNamespace="urn:com.redhat.brq.integration.exercise.shipment:1.0">
+            <xsd:element name="address">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" name="firstName" type="xsd:string" maxOccurs="1"/>
+                        <xsd:element minOccurs="1" name="lastName" type="xsd:string" maxOccurs="1"/>
+                        <xsd:element minOccurs="1" name="street" type="xsd:string" maxOccurs="1"/>
+                        <xsd:element minOccurs="1" name="city" type="xsd:string" maxOccurs="1"/>
+                        <xsd:element minOccurs="1" name="zipCode" type="xsd:string" maxOccurs="1"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="delivery">
+                <xsd:complexType>
+                    <xsd:attribute name="status">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <xsd:enumeration value="FAIL"></xsd:enumeration>
+                                <xsd:enumeration value="OK"></xsd:enumeration>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:attribute>
+                </xsd:complexType>
+            </xsd:element>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="address">
+        <wsdl:part name="parameters" element="tns:address"/>
+    </wsdl:message>
+    <wsdl:message name="status">
+        <wsdl:part name="parameters" element="tns:delivery"></wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="ShipmentServicePortType">
+        <wsdl:operation name="delivery">
+            <wsdl:input name="delivery" message="tns:address"></wsdl:input>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="ShipmentReplyServicePortType">
+        <wsdl:operation name="response">
+            <wsdl:input message="tns:status"></wsdl:input>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>
