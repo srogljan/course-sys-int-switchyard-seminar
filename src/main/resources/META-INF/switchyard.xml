@@ -50,9 +50,23 @@
     </sca:service>
     <sca:service name="InventoryReplyService" promote="InventoryReplyComponent/InventoryReplyService">
       <sca:interface.wsdl interface="InventoryService.wsdl#wsdl.porttype(InventoryResponseServicePortType)"/>
+      <file:binding.file name="file1">
+        <file:contextMapper includes="orderId"/>
+        <file:messageComposer class="com.redhat.brq.integration.switchyard.inventory.MessageComposer"/>
+        <file:directory>${sys.base}/target/outbox/inventory</file:directory>
+        <file:consume>
+          <file:delete>true</file:delete>
+        </file:consume>
+      </file:binding.file>
     </sca:service>
     <sca:reference name="InventoryServicePortType" multiplicity="0..1" promote="OrderComponent/InventoryService">
       <sca:interface.wsdl interface="InventoryService.wsdl#wsdl.porttype(InventoryServicePortType)"/>
+      <file:binding.file name="file1">
+        <file:contextMapper includes=".*"/>
+        <file:messageComposer class="com.redhat.brq.integration.switchyard.inventory.MessageComposer"/>
+        <file:directory>${sys.base}/target/inbox/inventory</file:directory>
+        <file:produce/>
+      </file:binding.file>
     </sca:reference>
     <sca:reference name="ShipmentServicePortType" multiplicity="0..1" promote="OrderComponent/ShipmentService">
       <sca:interface.wsdl interface="ShipmentService.wsdl#wsdl.porttype(ShipmentServicePortType)"/>
@@ -68,7 +82,7 @@
     <transform:transform.jaxb from="{urn:com.redhat.brq.integration.switchyard:1.0}order" to="java:com.redhat.brq.integration.switchyard.models.Order" contextPath="com.redhat.brq.integration.switchyard.models"/>
   </sy:transforms>
   <sy:domain>
-    <sy:properties load="">
+    <sy:properties load="service.properties">
       <sy:property name="org.switchyard.handlers.messageTrace.enabled" value="true"/>
     </sy:properties>
   </sy:domain>

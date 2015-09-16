@@ -38,7 +38,7 @@ public class OrderServiceBean implements OrderService {
         storageService.save(status);
 
         try {
-            //@todo(step3) invoke inventoryService with property orderId
+            inventoryService.newInvocation().setProperty("orderId", Long.toString(order.getId())).invoke(order.getItems().toArray(new OrderItem[0]));
             shipmentService.newInvocation().setProperty("orderId", Long.toString(order.getId())).invoke(order.getAddress());
         } catch (Exception e) {
             throw new RuntimeException(e);

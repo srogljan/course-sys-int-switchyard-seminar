@@ -16,7 +16,8 @@ import java.util.List;
 @Named("CsvTransformer")
 public class CsvTransformer {
 
-    //@todo(step3) declare transformation (see contracts)
+    @Transformer(from = "java:com.redhat.brq.integration.switchyard.models.OrderItem[]",
+            to = "{urn:com.redhat.brq.integration.exercise.inventory:1.0}reserve")
     public String transform(OrderItem[] from) {
         StringWriter writer = new StringWriter();
         Arrays.stream(from).forEach(item -> {
@@ -28,7 +29,8 @@ public class CsvTransformer {
         return writer.toString();
     }
 
-    //@todo(step3) declare transformation (see contracts)
+    @Transformer(from = "{urn:com.redhat.brq.integration.exercise.inventory:1.0}response",
+            to = "java:com.redhat.brq.integration.switchyard.models.InventoryReply[]")
     public InventoryReply[] reply(String from) throws IOException {
         if (from == null) return null;
         BufferedReader readed = new BufferedReader(new StringReader(from));
