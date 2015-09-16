@@ -22,6 +22,15 @@
         <sca:interface.java interface="com.redhat.brq.integration.switchyard.status.OrderStatusService"/>
       </sca:service>
     </sca:component>
+    <sca:component name="ShipmentReplyComponent">
+      <bean:implementation.bean class="com.redhat.brq.integration.switchyard.shipment.ShipmentReplyServiceBean"/>
+      <sca:service name="ShipmentReplyService">
+        <sca:interface.java interface="com.redhat.brq.integration.switchyard.shipment.ShipmentReplyService"/>
+      </sca:service>
+      <sca:reference name="OrderStatusService">
+        <sca:interface.java interface="com.redhat.brq.integration.switchyard.status.OrderStatusService"/>
+      </sca:reference>
+    </sca:component>
     <sca:component name="InventoryReplyComponent">
       <bean:implementation.bean class="com.redhat.brq.integration.switchyard.inventory.InventoryReplyServiceBean"/>
       <sca:service name="InventoryReplyService">
@@ -31,6 +40,14 @@
         <sca:interface.java interface="com.redhat.brq.integration.switchyard.status.OrderStatusService"/>
       </sca:reference>
     </sca:component>
+    <sca:service name="ShipmentReplyServicePortType" promote="ShipmentReplyComponent/ShipmentReplyService">
+      <sca:interface.wsdl interface="ShipmentService.wsdl#wsdl.porttype(ShipmentReplyServicePortType)"/>
+      <jms:binding.jms name="jms1">
+        <jms:contextMapper includes=".*"/>
+        <jms:queue>SHPMNT.RESP</jms:queue>
+        <jms:connectionFactory>#ConnectionFactory</jms:connectionFactory>
+      </jms:binding.jms>
+    </sca:service>
     <sca:service name="InventoryReplyService" promote="InventoryReplyComponent/InventoryReplyService">
       <sca:interface.wsdl interface="InventoryService.wsdl#wsdl.porttype(InventoryResponseServicePortType)"/>
     </sca:service>
@@ -47,6 +64,7 @@
     </sca:reference>
   </sca:composite>
   <sy:transforms>
+    <transform:transform.jaxb from="java:com.redhat.brq.integration.switchyard.models.Address" to="{urn:com.redhat.brq.integration.exercise.shipment:1.0}address" contextPath="com.redhat.brq.integration.switchyard.models"/>
     <transform:transform.jaxb from="{urn:com.redhat.brq.integration.switchyard:1.0}order" to="java:com.redhat.brq.integration.switchyard.models.Order" contextPath="com.redhat.brq.integration.switchyard.models"/>
   </sy:transforms>
   <sy:domain>
