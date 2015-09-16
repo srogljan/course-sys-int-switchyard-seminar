@@ -12,6 +12,9 @@
       <sca:reference name="InventoryService">
         <sca:interface.java interface="com.redhat.brq.integration.switchyard.inventory.InventoryService"/>
       </sca:reference>
+      <sca:reference name="AccountingService">
+        <sca:interface.java interface="com.redhat.brq.integration.switchyard.accounting.AccountingService"/>
+      </sca:reference>
       <sca:reference name="OrderStatusService">
         <sca:interface.java interface="com.redhat.brq.integration.switchyard.status.OrderStatusService"/>
       </sca:reference>
@@ -75,6 +78,20 @@
         <jms:queue>SHPMNT.REQ</jms:queue>
         <jms:connectionFactory>#ConnectionFactory</jms:connectionFactory>
       </jms:binding.jms>
+    </sca:reference>
+    <sca:reference name="AccountingResource" multiplicity="0..1" promote="OrderComponent/AccountingService">
+      <sca:interface.java interface="com.redhat.brq.integration.switchyard.accounting.AccountingResource"/>
+      <resteasy:binding.rest name="rest1">
+        <resteasy:interfaces>com.redhat.brq.integration.switchyard.accounting.AccountingResource
+                </resteasy:interfaces>
+        <resteasy:address>https://localhost:7171</resteasy:address>
+        <resteasy:basic>
+          <resteasy:user>admin</resteasy:user>
+          <resteasy:password>foo</resteasy:password>
+          <resteasy:host>localhost</resteasy:host>
+          <resteasy:port>7171</resteasy:port>
+        </resteasy:basic>
+      </resteasy:binding.rest>
     </sca:reference>
   </sca:composite>
   <sy:transforms>
