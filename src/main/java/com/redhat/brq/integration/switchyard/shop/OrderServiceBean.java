@@ -21,7 +21,8 @@ public class OrderServiceBean implements OrderService {
     @Inject
     private ReferenceInvoker shipmentService;
 
-    //@todo(step1) inject reference
+    @Reference
+    @Inject
     private OrderStatusService storageService;
 
     //@todo(step4) inject reference AccountingService

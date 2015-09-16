@@ -2,6 +2,7 @@
 <sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:2.0" xmlns:file="urn:switchyard-component-camel-file:config:2.0" xmlns:jms="urn:switchyard-component-camel-jms:config:2.0" xmlns:resteasy="urn:switchyard-component-resteasy:config:2.0" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:2.0" xmlns:sy="urn:switchyard-config:switchyard:2.0" xmlns:transform="urn:switchyard-config:transform:2.0" name="order" targetNamespace="urn:com.redhat.brq.integration.switchyard:1.0">
   <sca:composite name="order" targetNamespace="urn:com.redhat.brq.integration.switchyard:1.0">
     <sca:component name="OrderComponent">
+      <bean:implementation.bean class="com.redhat.brq.integration.switchyard.shop.OrderServiceBean"/>
       <sca:service name="OrderService">
         <sca:interface.java interface="com.redhat.brq.integration.switchyard.shop.OrderService"/>
       </sca:service>
@@ -11,6 +12,15 @@
       <sca:reference name="InventoryService">
         <sca:interface.java interface="com.redhat.brq.integration.switchyard.inventory.InventoryService"/>
       </sca:reference>
+      <sca:reference name="OrderStatusService">
+        <sca:interface.java interface="com.redhat.brq.integration.switchyard.status.OrderStatusService"/>
+      </sca:reference>
+    </sca:component>
+    <sca:component name="OrderStorage">
+      <bean:implementation.bean class="com.redhat.brq.integration.switchyard.status.OrderStatusServiceBean"/>
+      <sca:service name="OrderStatusService">
+        <sca:interface.java interface="com.redhat.brq.integration.switchyard.status.OrderStatusService"/>
+      </sca:service>
     </sca:component>
     <sca:component name="InventoryReplyComponent">
       <bean:implementation.bean class="com.redhat.brq.integration.switchyard.inventory.InventoryReplyServiceBean"/>
